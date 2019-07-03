@@ -1,0 +1,119 @@
+<?php
+	
+	include ("connection.php");
+	//include ("ExportToExcel.php");
+
+	if(isset($_POST["submit"]))
+	{
+		$filename = "uploads/".strtotime("now").'.csv';
+     $result1=executeQuery("select s.stdid,s.fullname,s.idno,u.username,IFNULL((select sum(q.marks) from studentquestion as sq,question as q where q.qnid=sq.qnid and sq.testid=".$_REQUEST['testid']." and sq.uid=st.uid and sq.stdanswer=q.correctanswer),0) as om from studenttest as st, student as s,user as u where s.idno=u.username and u.uid=st.uid and st.testid=".$_REQUEST['testid'].";" );
+
+		$num_rows = mysql_num_rows($result);
+		if($num_rows >= 1)
+		{
+			$row = mysql_fetch_assoc($result);
+			$fp = fopen($filename, "w");
+			$seperator = "";
+			$comma = "";
+
+			foreach ($row as $name => $value)
+				{
+					$seperator .= $comma . '' .str_replace('', '""', $name);
+					$comma = ",";
+				}
+
+			$seperator .= "\n";
+			fputs($fp, $seperator);
+	
+			mysql_data_seek($result, 0);
+			while($row = mysql_fetch_assoc($result))
+				{
+					$seperator = "";
+					$comma = "";
+
+					foreach ($row as $name => $value) 
+						{
+							$seperator .= $comma . '' .str_replace('', '""', $value);
+							$comma = ",";
+						}
+
+					$seperator .= "\n";
+					fputs($fp, $seperator);
+				}
+	
+			fclose($fp);
+			echo "Your file is ready. You can download it from <a href='$filename'>here!</a>";
+		}
+		else
+		{
+			echo "There is no record in your Database";
+		}
+
+
+	}
+	closedb();
+ 	}
+
+?>
+
+<html>
+<head>
+	<style type="text/css">
+	body
+	{
+		margin: 0;
+		padding: 0;
+		background-color:#D6F5F5;
+		text-align:center;
+	}
+	.top-bar
+		{
+			width: 100%;
+			height: auto;
+			text-align: center;
+			background-color:#FFF;
+			border-bottom: 1px solid #000;
+			margin-bottom: 20px;
+		}
+	.inside-top-bar
+		{
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+	.link
+		{
+			font-size: 18px;
+			text-decoration: none;
+			background-color: #000;
+			color: #FFF;
+			padding: 5px;
+		}
+	.link:hover
+		{
+			background-color: #9688B2;
+		}
+	</style>
+	
+</head>
+
+<body>
+	<div class="top-bar">
+		<div class="inside-top-bar">
+			<a href="http://www.eggslab.net"><img src="http://www.eggslab.net/wp-content/uploads/2015/03/eggslablogo.png" width="500px"></a>
+			<br><br>
+			<a href="http://www.eggslab.net/export-mysql-table-data-into-excel-sheet" class="link">&larr; Back to Article</a> | <a href="http://demos.eggslab.net/" class="link">More Demos &rarr;</a>
+		</div>
+	</div>
+    	
+
+    		<form name="export" method="post">
+    			<input type="submit" value="Click Me!" name="submit">
+    		</form>
+    
+
+    <hr style="margin-top:300px;" />	
+    
+    <div align="center" style="font-size:18px;"><a href="http://www.eggslab.net">&copy; Eggs Lab</a></div>
+ 
+</body>
+</html>

@@ -1,0 +1,38 @@
+<nav id="primary_nav_wrap">
+<ul>
+  <li class="current-menu-item"><a href="#"></a></li>
+  <li><a href="#">Users</a>
+    <ul>
+      <li><a href="usermng.php" alt="Manage Users" title="This takes you to User Management Section">Manage users</a></li>
+       
+          </li>
+          
+    </ul>
+  </li>
+  <li><a href="#">Student</a>
+    <ul>
+      <li><a href="usermng.php" alt="Manage Users" title="This takes you to User Management Section">Manage Students</a></li>
+      <li><a href="studentmng.php" alt="Manage Students" title="Student Management">Manage Students</a></li>
+      
+    </ul>
+  </li>  
+  <li><a href="#">Instructor</a>
+    <ul>
+      <li><a href="#">Manage Instructors</a></li>
+      
+    </ul>
+  </li>    
+  <li><a href="#">Assessment</a>
+    <ul>
+      <li><a href="#">Aprove Assessment</a></li>
+      
+    </ul>
+  </li>
+  <li><a href="#">Grade</a>
+    <ul>
+      <li><a href="#">Aprove Grade</a></li>
+      
+    </ul> 
+    
+  </li>
+</nav>

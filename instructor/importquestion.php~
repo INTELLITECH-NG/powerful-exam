@@ -1,0 +1,162 @@
+<?php
+
+/*
+***************************************************
+*** Examination ment ManageSystem               ***
+***---------------------------------------------***
+*** Developer: Dejene Techane                   ***
+*** Title: Import Questions                     ***
+***************************************************
+*/
+
+/* Procedure
+*********************************************
+ * ----------- *
+ * PHP Section *
+ * ----------- *
+Step 1: Perform Session Validation.
+  case 1:Submit to import file to the system.
+ * ------------ *
+ * HTML Section *
+ * ------------ *
+Step 2: Display the html form
+	case 1: Import form to import excel file
+	
+
+*********************************************
+*/
+
+error_reporting(0);
+/********************* Step 1 *****************************/
+session_start();
+include_once '../include/emsdb.php';
+        if(!isset($_SESSION['username'])){
+            $_GLOBALS['message']="Session Timeout.Click here to <a href=\"../index.php\">Re-LogIn</a>";
+        }
+        else if(isset($_REQUEST['logout'])){
+           unset($_SESSION['username']);
+            $_GLOBALS['message']="You are Loggged Out Successfully.";
+            header('Location: ../index.php');
+        }else if(isset($_REQUEST['coursemng'])){
+        	header('Location:coursemng.php');
+        }
+        
+       else if(isset($_REQUEST['import']))
+	{
+		
+	
+        if ($_FILES['file']['size'] > 0) { 
+        	
+        $file = $_FILES['file']['tmp_name'];
+		  $handle = fopen($file, "r");
+		  
+      if(($_FILES['file']["type"] == "text/csv")){
+        
+     	$c = 0;
+		while(($filesop = fgetcsv($handle, 10000, ",")) !== false)
+		{
+			$question = $filesop[0];
+			$optiona = $filesop[1];
+			$optionb = $filesop[2];
+			$optionc = $filesop[3];
+			$optiond = $filesop[4];
+			$cans = $filesop[5];
+			$marks = $filesop[6];
+			//$dept = $filesop[7];
+			$c++;
+			if($c>1)
+			{
+		     $sql1 = executeQuery("INSERT INTO question(question,optiona, optionb,optionc,optiond,correctanswer,marks,uid) VALUES ('$question','$optiona','$optionb','$optionc','$optiond','$cans','$marks','".$_SESSION['uid']."')");
+			// $sql2=executeQuery("INSERT INTO user (username,password,role) VALUES('$idno','$pass','$role')");
+		}
+		
+		}
+		
+		
+		
+			if($sql1){
+			$_GLOBALS['message']="You database has imported successfully. Click <a href=\"prepq.php\">Here</a>  to view.";
+			
+			}else{
+			$_GLOBALS['message']="Sorry! There may be duplication of data.";
+			}
+	  }
+	  else{
+	  	 $_GLOBALS['message']= "You are opening different from .csv file, try again.";
+        } 
+	  	  
+	  }
+			
+		
+			else{
+			 $_GLOBALS['message']= "You are opening Empty file, try again.";	
+			}
+	
+			closedb();
+	}
+        
+?>
+
+<html>
+    <head>
+        <title>EMS-IMPORT Question</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+         <link rel="icon" type="jpg/png" href="../images/logo.png"/>
+        <link rel="stylesheet" type="text/css" href="../ems.css"/>
+    </head>
+    <body>
+        <?php
+       /********************* Step 2 *****************************/
+        if(isset($_GLOBALS['message'])) {
+            echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
+        }
+        ?>
+        <div id="container">
+            <div class="header">
+               <img style="margin:10px 2px 2px 10px;float:left;" height="102" width="136" src="../images/logo.png" alt="ems"/>
+                
+                <?php require'../include/header.php';?>
+                
+                </div>
+            <div class="menubar">
+
+                <form name="coursemng" action="coursemng.php" method="post">
+                    <ul id="menu">
+                        <?php if(isset($_SESSION['username'])){ ?>
+                        <li><input type="submit" value="LogOut" name="logout" class="subbtn" title="Log Out"/></li>
+                          <li><input type="submit" value="Manage course" name="coursemng" class="subbtn" title="Manage course"/></li>
+                        <?php } ?>
+                    </ul>
+                </form>
+            </div>
+       <div class="page">
+          <?php if(isset($_SESSION['username'])){ ?>
+
+        <form name="import" method="post" enctype="multipart/form-data">
+        <table cellpadding="20" cellspacing="20" style="text-align:left;margin-left:15em" >
+         <tr>
+         <td><div class="help">NOTE: To import Questions from excel follow the following steps:</br>
+         1.Open new spreadsheet and format like the following</br></div></td></tr>
+         <tr><td><img src="../images/crs.png"/></br></td>
+         <tr><td><div class="help">2. Then save it as &lt;filename &gt;.csv(e.g question.csv)</br>
+         3.Then go back to the system and click on the browse file button and open .csv file format</br>
+         4. Finally, Click on Load File Into Database button to load excel file to database.</br>
+         NB:The file extension should be .csv file format, Unless other file format should not be possible!</div></td></tr>
+         <tr>
+    	<td><input type="file" name="file" />
+        <input type="submit" name="import" class="subbtn" value="Load File Into Database" /></td>
+        </tr>
+        </table>                      
+    </form>
+                <?php }?>
+
+            </div>
+
+          <div id="footer">
+           <?php include'../include/footer.php';?>
+           
+           
+           </div>
+      </div>
+  </body>
+</html>

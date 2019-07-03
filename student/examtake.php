@@ -1,0 +1,103 @@
+
+
+
+<?php
+
+/*
+***************************************************
+*** Examination Management System               ***
+***---------------------------------------------***
+*** Developer: Dejene Techane                   ***
+*** Title:  Exam Completion Acknowledgement     ***
+***************************************************
+*/
+
+error_reporting(0);
+session_start();
+include_once '../include/emsdb.php';
+if(!isset($_SESSION['username'])) {
+    $_GLOBALS['message']="Session Timeout.Click here to <a href=\"../index.php\">Re-LogIn</a>";
+}
+ //This is to protect unauthorized users
+ else if(!($_SESSION['role']=="Student")){
+    unset($_SESSION['username']);
+  $_GLOBALS['message']="Please, You are accessing unauthorized page.Click here to <a href=\"../index.php\">Re-LogIn</a>";
+ }
+else if(isset($_REQUEST['logout']))
+{
+    //Log out and redirect login page
+    unset($_SESSION['username']);
+    header('Location: ../index.php');
+
+}
+else if(isset($_REQUEST['dashboard'])){
+    //redirect to dashboard
+   
+     header('Location: stdwelcome.php');
+
+}
+if(isset($_SESSION['starttime']))
+{
+    unset($_SESSION['starttime']);
+    unset($_SESSION['endtime']);
+    unset($_SESSION['tqn']);
+    unset($_SESSION['qn']);
+    unset($_SESSION['duration']);
+    executeQuery("update studenttest set status='over' where testid=".$_SESSION['testid']." and uid=".$_SESSION['uid'].";");
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>EMS-Exam Acknowledgement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" type="jpg/png" href="../images/logo.png"/>
+    <link rel="stylesheet" type="text/css" href="../ems.css"/>
+    <script type="text/javascript" src="../validate.js" ></script>
+    </head>
+  <body >
+       <?php
+
+        if($_GLOBALS['message']) {
+            echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
+        }
+        ?>
+      <div id="container">
+       <div class="header">                              
+                <?php require'../include/header.php';?>                
+                </div>
+           <form id="editprofile" action="editprofile.php" method="post">
+          <div class="menubar">
+               <ul id="menu">
+                        <?php if(isset($_SESSION['username'])) {
+                         // Navigations
+                         ?>
+                        <li><input type="submit" value="LogOut" name="logout" class="subbtn" title="Log Out"/></li>
+                        <li><input type="submit" value="DashBoard" name="dashboard" class="subbtn" title="Dash Board"/></li>
+                        
+                        <?php
+               $result=executeQuery("select * from student where idno='".$_SESSION['username']."';");
+                $r=mysql_fetch_array($result);
+                closedb();
+                ?>
+                <input type="" class="subbtn" value="Name: <?php echo htmlspecialchars_decode($r['fullname'], ENT_QUOTES);?>">
+                       
+
+               </ul>
+          </div>
+      <div class="page">
+          <h3 style="color:#0000cc;text-align:center;">Your answers are Successfully Submitted. To view the Results <b><a href="viewresult.php">Click Here</a></b> </h3>
+          <?php
+                        }
+          ?>
+      </div>
+
+           </form>
+     <div id="footer">
+           <?php include'../include/footer.php';?>
+       </div>
+      </div>
+  </body>
+</html>
+

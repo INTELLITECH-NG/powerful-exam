@@ -1,0 +1,196 @@
+                      
+<?php
+/*
+ * ***************************************************
+ * ** Examination Management System                ***
+ * **--------------------------------------------- ***
+ * ** Developer: Dejene Techane                    ***
+ * ** Title: Exam Management(Add,delete,Modify)    ***
+ * ***************************************************
+ */
+
+/* Procedure
+ * ********************************************
+
+ * ----------- *
+ * PHP Section *
+ * ----------- *
+
+  Step 1: Perform Session Validation.
+
+  Step 2: Event to Process...
+  Case 1 : Logout - perform session cleanup.
+  Case 2 : Dashboard - redirect to Dashboard
+  Case 3 : Delete - Delete the selected Exam/s from System.
+  Case 4 : Edit - Update the new information.
+  Case 5 : Add - Add new Exam to the system.
+  Case 6 : Manage Questions - Store the Exam identity in session varibles and redirect to prepare question section.
+
+ * ------------ *
+ * HTML Section *
+ * ------------ *
+
+  Step 3: Display the HTML Components for...
+  Case 1: Add - Form to receive new Exam information.
+  Case 2: Edit - Form to edit Existing Exam Information.
+  Case 3: Default Mode - Displays the Information of Existing Exam, If any.
+ * ********************************************
+ */
+
+error_reporting(0);
+session_start();
+include_once '../include/emsdb.php';
+/* * ************************ Step 1 ************************ */
+if (!isset($_SESSION['username'])) {
+    $_GLOBALS['message'] = "Session Timeout.Click here to <a href=\"../index.php\">Re-LogIn</a>";
+} 
+//This is to protect unauthorized users
+ else if(!($_SESSION['role']=="Staff")){
+    unset($_SESSION['username']);
+  $_GLOBALS['message']="Please, You are accessing unauthorized page.Click here to <a href=\"../index.php\">Re-LogIn</a>";
+ }
+else if (isset($_REQUEST['logout'])) {
+    /*     * ************************ Step 2 - Case 1 ************************ */
+    //Log out and redirect login page
+    unset($_SESSION['username']);
+    header('Location: ../index.php');
+} else if (isset($_REQUEST['dashboard'])) {
+    /*     * ************************ Step 2 - Case 2 ************************ */
+    //redirect to dashboard
+    header('Location: stfwelcome.php');
+} 
+else if($_REQUEST['search']){
+	 //if($_REQUEST['dept'])
+        //storing department into session variable
+        if (strcmp($_REQUEST['dept'], "<Choose the Department>") == 0){
+        	//$_GLOBALS['message']="Please select Department first";
+        	header('Location:searchdept.php');
+}
+        else{
+       $_SESSION['dept']=$_REQUEST['dept'];
+        header('Location: exammng.php');
+	}
+}
+?>
+<html>
+    <head>
+        <title>EMS-Manage Exam</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="icon" type="jpg/png" href="../images/logo.png"/>
+        <link rel="stylesheet" type="text/css" href="../ems.css"/> 
+        <script type="text/javascript" src="../validate.js" ></script>
+    </head>
+    <body>
+<?php
+if ($_GLOBALS['message']) {
+    echo "<div class=\"message\">" . $_GLOBALS['message'] . "</div>";
+}
+?>
+        <div id="container">
+            <div class="header">
+                 <img style="margin:10px 2px 2px 10px;float:left;" height="93" width="136" src="../images/logo.png" alt="ems"/>
+                
+                <?php require'../include/header.php';?>  </div>
+           
+                <div class="menubar">
+                <form name="testmng" action="" method="post">
+
+                    <ul id="menu">
+<?php
+if (isset($_SESSION['username'])) {
+    // Navigations
+?>
+                        <li><input type="submit" value="LogOut" name="logout" class="subbtn" title="Log Out"/></li>
+                        <li><input type="submit" value="DashBoard" name="dashboard" class="subbtn" title="Dash Board"/></li>
+                          <li><input type="submit" value="Cancel" name="cancel" class="subbtn" title="Cancel"/></li>
+                        <li><input type="submit" value="Save" name="savea" class="subbtn" onclick="validatetestform('addexam')" title="Save the Changes"/></li>
+
+<?php 
+} ?>
+                    </ul>
+
+                </div>
+                <div class="page">
+<?php
+if (isset($_SESSION['username'])) {
+    // To display the Help Message
+      echo "<div class=\"pmsg\" style=\"text-align:center;\">Exam Management </div>";
+    if (isset($_REQUEST['forpq']))
+        echo "<div class=\"pmsg\" style=\"text-align:center\"> Which exam questions Do you want to Manage? <br/><b>Help:</b>Click on Questions button to manage the questions of respective exam</div>";
+    ?>
+			
+                                    
+                                    
+                    <table cellpadding="20" cellspacing="20" style="text-align:left;" >
+                        <tr>
+                            <td>Course Name</td>
+                            <td>
+                                <select name="course">
+                                    <option selected value="<Choose the Course>">&lt;Choose the Course&gt;</option>
+<?php
+        $result = executeQuery("select * from course where dept='".$_SESSION['dept']."' order by cid;");
+        
+        while ($r = mysql_fetch_array($result)) {
+
+            echo "<option value=\"" . $r['cid'] . "\">" . htmlspecialchars_decode($r['cname'], ENT_QUOTES) . "[".$r['ccode']."]</option>";
+        }
+        closedb();
+?>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>Exam Name</td>
+                            <td><input type="text" name="testname" value="" size="16" onkeyup="isalphanum(this)" /></td>
+                            <td><div class="help"><b>Note:</b><br/>Exam Name must be Unique<br/> in order to identify different<br/> exam on same course.</div></td>
+                        </tr>
+                        <tr>
+                            <td>Exam Description</td>
+                            <td><textarea name="testdesc" cols="20" rows="3" ></textarea></td>
+                            <td><div class="help"><b>Describe here:</b><br/>What the exam is all about?</div></td>
+                        </tr>
+                        <tr>
+                            <td>Total Questions</td>
+                            <td><input type="text" name="totalqn" value="" size="16" onkeyup="isnum(this)" /></td>
+
+                        </tr>
+                        <tr>
+                            <td>Duration(Mins)</td>
+                            <td><input type="text" name="duration" value="" size="16" onkeyup="isnum(this)" /></td>
+
+                        </tr>
+                        <tr>
+                            <td>Exam From </td>
+                            <td><input id="testfrom" type="text" name="testfrom" value="" size="16" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td>Exam To </td>
+                            <td><input id="testto" type="text" name="testto" value="" size="16" readonly /></td>
+                        </tr>
+
+                        <tr>
+                            <td>Exam Secret Code</td>
+                            <td><input type="text" name="testcode" value="" size="16" onkeyup="isalphanum(this)" /></td>
+                            <td><div class="help"><b>Note:</b><br/>Candidates must enter<br/>this code in order to <br/> take the exam</div></td>
+                        </tr>
+
+                    </table>
+
+<?php
+    }
+
+    
+    } 
+        
+?>
+
+                </div>
+            </form>
+            <div id="footer">
+                <?php include'../include/footer.php';?>  
+                
+                </div>
+        </div>
+    </body>
+</html>

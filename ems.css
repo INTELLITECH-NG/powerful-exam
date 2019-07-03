@@ -1,0 +1,432 @@
+/*
+***************************************************
+***Examination Management System                ***
+***---------------------------------------------***
+*** Developer: Dejene Techane                   ***
+*** Title: EMS Cascading StyleSheet             ***
+**************************************************/
+
+/* 
+    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body{
+  background:url(images/bg.png) repeat;
+   height:auto;
+   font-size:11pt;
+   
+}
+#container
+{
+    width:90%;
+    margin:5px 5% 5px 5%;
+}
+.page
+{
+    background: url("images/page.gif") repeat ;
+   height:auto;
+   width:auto;
+}
+.header
+{
+    background: url("images/header.png") repeat;
+    height:6em;
+    margin-top:0;
+    margin-bottom:-1.2em;
+    border-bottom: 1px solid #98CD36;
+	overflow: hidden;
+}
+.headtext
+{
+    padding:10px 0 0 0;
+    font-size:200%;  
+    color:#ffffff;
+    line-height:2em;
+    letter-spacing:3px;
+    font-weight:bolder;
+ }
+ #textbox{
+	width:auto;
+	height:25px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;	
+}
+.menubar
+{
+     background:#808080 url("images/menu.png") repeat;
+     height:2.7em;
+}
+.subbtn
+{
+   font-family:Arial, Helvetica, sans-serif;
+    background:url("images/btn.png");
+	font-size:15px;
+	width:auto;
+	height:37px;
+	float:right;
+	margin-right:8px;
+	repeat-x top center; border: 0 solid #06C;
+	-moz-border-radius: 5px;
+	 color:#03C;	
+   
+}
+.subbtn:hover
+{
+    cursor:pointer;
+    background:#a9a5a2;
+	color:#ffffff;
+	text-transform:uppercase;
+}
+.ssubbtn
+{
+    font-family:verdana,arial,geneva;
+    background:#ffffff url("images/btn.png");
+    font-size:1.2em;
+    color:#ffffff;
+    height:37px;
+    width:auto;
+    padding-left:2px;
+    padding-right:2px;
+
+}
+.ssubbtn:hover
+{
+    cursor:pointer;
+    background:#a9a5a2;
+	color:#ffffff;
+	text-transform:uppercase;
+}
+table
+{
+    border:0;
+    background:#f5f9f4;
+    font-family:verdana,sans-serif;
+    font-size:1.1em;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+ }
+.btn {
+    text-decoration:none;
+    text-align:center;
+    background:url("images/btn.png") repeat-x;
+    color:#000000;
+    font-family:verdana,sans-serif;
+    font-size:1.3em;
+    font-weight:bold;
+    padding:4px 4px 4px 4px;
+    border-color:#ffffff;
+    border-width:5px;
+    border-style:solid;
+    margin-bottom:0;
+ }
+  #menu li{
+      list-style-type:none;
+      display:inline;
+      float:right;
+ }
+  #footer
+  {
+      background:url(images/header.png) repeat-x;
+      height:2em;
+      color:#ffffff;
+      text-align:center;
+      padding:10px 5px 5px 5px;
+      font-family:verdana,sans-serif;
+      font-size:1em;
+  }
+  .message
+  {
+      width:89%;
+      margin:5px 6% -5px 5%;
+      background:#808080 url("images/menu.png") repeat;
+      color:#ff0000;
+      font-size:1.2em;
+      padding:2px 5px 2px 5px;
+  }
+  .export
+  {
+      width:89%;
+      margin:5px 6% -5px 5%;
+      background:#808080 url("images/menu.png") repeat;
+      color:#ff0000;
+      font-size:1.2em;
+      padding:2px 5px 2px 5px;
+  }
+  .admpage
+  {
+      background:transparent;
+      margin-left:auto;
+      margin-right:auto;
+      text-align:center;    
+  }
+ .btmimg
+ {
+     z-index:40;
+     position:relative;
+     opacity: 0.55;
+    filter:alpha(opacity:55);
+	-moz-opacity:0.55;
+	-khtml-opacity: 0.55;
+ }
+ .topimg
+ {
+     z-index:100;
+     left:20%;
+     right:20%;
+     text-align:center;
+     position:absolute;
+     top:30%;
+     bottom:10%;
+     opacity:0.9;
+     filter:alpha(opacity:90);
+	-moz-opacity:0.9;
+	-khtml-opacity: 0.9;
+ }        
+  /* tooltip */
+ a.tt{
+    position:relative;
+    z-index:24;
+    color:#3CA3FF;
+	font-weight:bold;
+    text-decoration:none;
+}
+a.tt span{ display: none; }
+
+/*background:; ie hack, something must be changed in a for ie to execute it*/
+a.tt:hover{ z-index:25; color: #aaaaff; background:#fff;}
+a.tt:hover span.tooltip{
+    display:block;
+    position:absolute;
+    top:0px; left:0;
+	padding: 15px 0 0 0;
+	width:200px;
+	color: #993300;
+    text-align: center;
+	filter: alpha(opacity:90);
+	-moz-opacity:0.9;
+	-khtml-opacity: 0.9;
+	opacity: 0.90;
+}
+a.tt:hover span.top{
+	display: block;
+	padding: 30px 8px 0;
+    background: url("images/bubble.gif") no-repeat top;
+}
+a.tt:hover span.middle{ /* different middle bg for stretch */
+	display: block;
+	padding: 0 8px;
+	background: url("images/bubble_filler.gif") repeat bottom;
+}
+a.tt:hover span.bottom{
+	display: block;
+	padding:3px 8px 10px;
+	color: #548912;
+    background: url("images/bubble.gif") no-repeat bottom;
+}
+.datatable {
+border: 1px solid #D6DDE6;
+border-collapse: collapse;
+text-align:left;
+width: 100%;
+font-size:1em;
+}
+.datatable td {border: 1px solid #D6DDE6;
+padding: 0.3em;
+}
+.datatable .tddata
+{
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+}
+.tddata a:link,.tddata a:visited{
+     color:white;
+     text-decoration:none;
+}
+.tddata a:hover,.tddata a:active{
+    color:white;
+    text-decoration:none;
+}
+.datatable th {
+border: 1px solid #828282;
+background-color: #ffcccc;
+font-weight: bold;
+text-align:left;
+padding-left: 0.3em;
+}
+.datatable tr{
+background-color: #ffffee;
+color: #000000;
+}
+.datatable tr .alt{
+background-color: #ffeeee;
+color: #000000;
+}
+.datatable tr:hover {
+background-color: #ccccff;
+color: #000000;
+}
+.help
+{
+    background-color:#ac9d8e;
+    color:#ffffff;
+    font-size:0.9em;
+    font-weight:bolder;
+    padding:2%;
+
+}
+.pmsg
+  {
+      width:98.8%;
+      margin:0;
+      background:#ffffcc;
+      color:#cc0000;
+      font-size:1.2em;
+      padding:2px 5px 2px 5px;
+}
+  .aclass 
+{
+    font-family:verdana,arial,geneva;
+    background:#ffffff url("images/btn.png");
+    
+    color:#000000;
+    height:34px;
+    border-style:outset;
+    width:auto;
+    padding-left:2px;
+    padding-right:2px;   
+}
+.aclass a:link,.aclass a:visited,aclass:hover,a:active
+{
+    text-decoration:none;
+   font-size:1.3em;
+    color:#ffffff;
+    height:35px;
+}
+
+.tc
+{
+    background:url("images/bg_form.gif");
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+.timerclass
+{
+   /* background-color: #ccffff;*/
+     background:url("images/bg_form.gif");
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    color: #af0a36;
+    border-right-style: ridge;
+    border-left-style: ridge;
+    border-bottom-style: ridge;
+    border-top-style: ridge;
+    padding:1px 2px;
+    font-size:90%;    
+}
+.ntab
+{
+    text-align:left;
+}
+.ntab td
+{
+    color: #af0a36;
+    padding:1px 2px 1px 2px;
+}
+/*dropdown menu css  */
+#primary_nav_wrap
+{
+        width:auto;
+		height:33px;
+		margin:0px;
+		padding:2px;
+		font-size:13px;
+		vertical-align:top;
+		float:left;
+		border-top-right-radius:10px;	
+	/*background: -webkit-linear-gradient(top, #7b0100 0%,#7b0100 100%);
+	background: -moz-linear-gradient(top, #7b0100 0%,#7b0100 100%);
+	background: -o-linear-gradient(top, #7b0100 0%,#7b0100 100%);
+	background: -ms-linear-gradient(top, #7b0100 0%,#7b0100 100%);
+	background: linear-gradient(top, #7b0100 0%,#7b0100 100%);
+	*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	   
+}
+
+#primary_nav_wrap ul
+{
+	list-style:none;
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0
+}                        
+#primary_nav_wrap ul li a
+{
+	display:block;
+	color:#33C;
+	text-decoration:none;
+	font-weight:700;
+	font-size:14px;
+	line-height:32px;
+	padding:0 15px;
+	 font-family:Arial, Helvetica, sans-serif;
+}
+#primary_nav_wrap ul li
+{
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0
+}
+#primary_nav_wrap ul li:hover
+{	
+	background:#a9a5a2;
+	color:#fff;
+	text-transform:uppercase;	
+}
+#primary_nav_wrap ul ul
+{
+	display:none;
+	position:absolute;
+	top:100%;
+	left:0;
+	background:#fff;
+	padding:0
+}
+#primary_nav_wrap ul ul li
+{
+	float:none;
+	width:200px
+}
+#primary_nav_wrap li {
+	position: relative;
+	list-style: none;
+	float: left;
+	display: block;
+	height: 34px;
+}
+#primary_nav_wrap ul ul a
+{
+	line-height:120%;
+	padding:10px 15px
+}
+
+#primary_nav_wrap ul ul ul
+{
+	top:0;
+	left:100%
+}
+#primary_nav_wrap ul li:hover > ul
+{
+	display:block	
+}
